@@ -108,17 +108,17 @@
     <string name="link">连接</string>
     <string name="link_wifi">连接WIFI</string>
     <string name="wifi_page_1_content1">
-    In the off state, press and hold the button for about 10 seconds\n
-    until the indicator light turns blue, that is, the reset is successful.</string>
-    <string name="wifi_page_1_content2">After the operation, you will see the blue light flashing.</string>
-    <string name="wifi_page_2_content">After pressing the scan code button, \n
-    please scan the QR code at the bottom of the cup with your mobile phone.</string>
-    <string name="next_step">Next Step</string>
-    <string name="scan">Scan</string>
+    关机状态下，长按按钮10秒左右\n
+    直至指示灯变为蓝灯，即重置成功。</string>
+    <string name="wifi_page_1_content2">按图操作后，会看到蓝灯闪烁</string>
+    <string name="wifi_page_2_content">按扫描按键后\n
+    请用手机扫描水杯底部的二维码</string>
+    <string name="next_step">下一步</string>
+    <string name="scan">扫描</string>
     <string name="link_by_hand">手动连接</string>
     <string name="input_ssid">手动输入SSID</string>
-    <string name="dont_know_version"><u>如果不知道是什么版本?</u></string>
-    <string name="cant_find_your_cup">Didn\'t find your cup?<u>Find more</u></string>
+    <string name="dont_know_version"><u>如何知道是什么版本?</u></string>
+    <string name="cant_find_your_cup">没有找到你的水杯?<u>查找更多</u></string>
     <string name="not_support_bluetooth">该手机不支持蓝牙</string>
     <string name="need_permission">需要允许权限</string>
     <string name="delete">删除</string>

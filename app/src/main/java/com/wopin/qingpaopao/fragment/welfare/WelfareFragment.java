@@ -115,7 +115,7 @@ public class WelfareFragment extends BaseMainFragment<WelfarePresenter> implemen
 
     @Override
     public void onProductContentList(ArrayList<ProductContent> productContents) {
-//        mScoreMarketContentAdapter.setProductContents(productContents);
+        mScoreMarketContentAdapter.setProductContents(productContents);
     }
 
     @Override
