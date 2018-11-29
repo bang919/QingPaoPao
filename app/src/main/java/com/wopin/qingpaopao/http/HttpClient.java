@@ -92,7 +92,7 @@ public class HttpClient {
                         }
                     })
                     .cache(cache)
-                    .addNetworkInterceptor(headInterceptor)
+//                    .addNetworkInterceptor(headInterceptor)
 //                    .addInterceptor(httpLoggingInterceptor)
                     .build();
         }
