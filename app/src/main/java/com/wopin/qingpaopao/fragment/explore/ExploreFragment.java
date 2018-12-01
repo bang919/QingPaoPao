@@ -2,6 +2,7 @@ package com.wopin.qingpaopao.fragment.explore;
 
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ public class ExploreFragment extends BaseMainFragment<ExplorePresenter> implemen
     private TabLayout mTabLayout;
     private EditText mSearchEt;
     private RecyclerView mExploreRv;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private View mLoadingView;
     private ExploreListNorAdapter mExploreListAdapter;
     private final static int PAGE_NUMBER = 10;
@@ -51,6 +53,7 @@ public class ExploreFragment extends BaseMainFragment<ExplorePresenter> implemen
         mSearchEt = rootView.findViewById(R.id.et_search);
         mTabLayout = rootView.findViewById(R.id.explore_tablayout);
         mExploreRv = rootView.findViewById(R.id.rv_explore_list);
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipeLayout);
         mLoadingView = rootView.findViewById(R.id.progress_bar_layout);
 
         rootView.findViewById(R.id.tv_issue).setOnClickListener(this);
@@ -59,6 +62,9 @@ public class ExploreFragment extends BaseMainFragment<ExplorePresenter> implemen
     private void setLoadingVisibility(boolean isVisibility) {
         if (mLoadingView != null) {
             mLoadingView.setVisibility(isVisibility ? View.VISIBLE : View.GONE);
+        }
+        if (!isVisibility && mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -85,6 +91,21 @@ public class ExploreFragment extends BaseMainFragment<ExplorePresenter> implemen
                 }
             }
         }, mExploreRv);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mExploreListAdapter.setNewData(null);
+                page = 1;
+                String s = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
+                if (s.equals(getString(R.string.hot_topic))) {//热门话题
+                    mPresenter.listHotExplores(page, PAGE_NUMBER);
+                } else if (s.equals(getString(R.string.newest_topic))) {//最新话题
+                    mPresenter.listNewlyExplores(page, PAGE_NUMBER);
+                } else {//我的话题
+                    mPresenter.listMyExplores(page, PAGE_NUMBER);
+                }
+            }
+        });
         mExploreRv.setAdapter(mExploreListAdapter);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

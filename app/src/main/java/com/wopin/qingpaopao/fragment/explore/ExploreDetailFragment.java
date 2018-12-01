@@ -1,7 +1,6 @@
 package com.wopin.qingpaopao.fragment.explore;
 
 import android.content.Context;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,10 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +27,7 @@ import com.wopin.qingpaopao.presenter.LoginPresenter;
 import com.wopin.qingpaopao.utils.GlideUtils;
 import com.wopin.qingpaopao.utils.TimeFormatUtils;
 import com.wopin.qingpaopao.utils.ToastUtils;
+import com.wopin.qingpaopao.utils.WebViewUtil;
 import com.wopin.qingpaopao.view.ExploreDetailView;
 
 import java.text.SimpleDateFormat;
@@ -114,8 +111,6 @@ public class ExploreDetailFragment extends BaseBarDialogFragment<ExploreDetailPr
     @Override
     public void onDestroy() {
         mRootView.removeOnLayoutChangeListener(mKeyBoardListener);
-        mDetailWebView.loadUrl("");
-        mDetailWebView.destroy();
         super.onDestroy();
     }
 
@@ -192,7 +187,7 @@ public class ExploreDetailFragment extends BaseBarDialogFragment<ExploreDetailPr
                 mLikeTv.setText(String.valueOf(mPostsBean.getLikes()));
                 ((TextView) mRootView.findViewById(R.id.tv_comment)).setText(String.valueOf(mPostsBean.getComments()));
 
-                loadWebView();
+                WebViewUtil.loadWebView(ExploreDetailFragment.this, mDetailWebView, mPostsBean.getContent());
 
                 setLoadingVisibility(true);
 
@@ -206,33 +201,6 @@ public class ExploreDetailFragment extends BaseBarDialogFragment<ExploreDetailPr
                 mPresenter.checkFollow(mPostsBean.getAuthor().getId());
             }
         }, 300);
-    }
-
-    private void loadWebView() {
-        mDetailWebView.loadData(getHtmlData(mPostsBean.getContent()), "text/html; charset=UTF-8", null);
-        WebSettings settings = mDetailWebView.getSettings();
-        // 如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
-        settings.setJavaScriptEnabled(true);
-        mDetailWebView.setWebViewClient(new WebViewClient() {
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                //等待证书响应
-                handler.proceed();
-            }
-        });
-    }
-
-    private String getHtmlData(String bodyHTML) {
-        String head = "<head>" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
-                "<style>img{max-width: 100%; width:auto; height:auto;}</style>" +
-                "</head>";
-        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
     @Override

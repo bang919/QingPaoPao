@@ -185,7 +185,7 @@ public class CrowdFundingProduceDialog extends DialogFragment implements View.On
         if (mCurrentAttributeBean.getOptions() != null && mCurrentAttributeBean.getOptions().size() > 0) {
             gradeContentTv.setText(mCurrentAttributeBean.getOptions().get(0));
         }
-        GlideUtils.loadImage(gradeImage, -1, mProductContent.getDescriptionImage().get(0), new CenterCrop());
+        GlideUtils.loadImage(gradeImage, -1, mProductContent.getImages().size() > 0 ? mProductContent.getImages().get(0).getSrc() : null, new CenterCrop());
     }
 
     public interface SupportInformationDialogCallback {

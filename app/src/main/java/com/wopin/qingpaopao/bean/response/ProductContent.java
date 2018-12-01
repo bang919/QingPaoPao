@@ -147,7 +147,6 @@ public class ProductContent implements Parcelable {
     private List<?> variations;
     private List<?> grouped_products;
     private List<MetaDataBean> meta_data;
-    private ArrayList<String> descriptionImages;
 
     protected ProductContent(Parcel in) {
         id = in.readInt();
@@ -197,7 +196,6 @@ public class ProductContent implements Parcelable {
         parent_id = in.readInt();
         purchase_note = in.readString();
         menu_order = in.readInt();
-        descriptionImages = in.createStringArrayList();
     }
 
     @Override
@@ -249,7 +247,6 @@ public class ProductContent implements Parcelable {
         dest.writeInt(parent_id);
         dest.writeString(purchase_note);
         dest.writeInt(menu_order);
-        dest.writeStringList(descriptionImages);
     }
 
     @Override
@@ -367,32 +364,6 @@ public class ProductContent implements Parcelable {
 
     public String getDescription() {
         return description;
-    }
-
-    public void initDescriptionImages() {
-        descriptionImages = new ArrayList<>();
-        int indexStart;
-        while ((indexStart = description.indexOf("http")) > 0) {
-            String image = "";
-
-            int indexEnd = description.indexOf(".jpg");
-            int indexPngEnd = description.indexOf(".png");
-            if (indexPngEnd != -1 && indexPngEnd < indexEnd) {
-                indexEnd = indexPngEnd;
-            }
-            if (indexEnd != -1) {
-                image = description.substring(indexStart, indexEnd + 4);
-            }
-            descriptionImages.add(image);
-            description = description.substring(indexEnd + 4);
-        }
-    }
-
-    public ArrayList<String> getDescriptionImage() {
-        if (descriptionImages == null) {
-            initDescriptionImages();
-        }
-        return descriptionImages;
     }
 
     public void setDescription(String description) {

@@ -160,12 +160,11 @@
                 app:layout_constraintLeft_toLeftOf="@id/tv_price"
                 app:layout_constraintTop_toBottomOf="@id/line2" />
 
-            <LinearLayout
+            <WebView
                 android:id="@+id/rv_goods_detail_linearlayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical"
                 android:paddingBottom="1dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

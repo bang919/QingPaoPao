@@ -88,15 +88,22 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/explore_tablayout" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_explore_list"
+    <com.wopin.qingpaopao.widget.MySwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="2dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/explore_tablayout" />
+        app:layout_constraintTop_toBottomOf="@id/explore_tablayout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_explore_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.wopin.qingpaopao.widget.MySwipeRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/progress_bar_layout"

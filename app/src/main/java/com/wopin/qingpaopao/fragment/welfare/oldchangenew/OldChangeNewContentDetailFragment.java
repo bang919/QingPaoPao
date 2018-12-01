@@ -1,6 +1,5 @@
 package com.wopin.qingpaopao.fragment.welfare.oldchangenew;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,14 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.wopin.qingpaopao.R;
 import com.wopin.qingpaopao.adapter.ScoreMarketContentDetailAdapter;
 import com.wopin.qingpaopao.bean.request.TrackingNumberSettingBean;
@@ -25,9 +21,9 @@ import com.wopin.qingpaopao.bean.response.ProductContent;
 import com.wopin.qingpaopao.fragment.BaseBarDialogFragment;
 import com.wopin.qingpaopao.fragment.welfare.order.SetTrackingNumberFragment;
 import com.wopin.qingpaopao.presenter.OldChangeNewContentDetailPresenter;
-import com.wopin.qingpaopao.utils.GlideUtils;
 import com.wopin.qingpaopao.utils.TimeFormatUtils;
 import com.wopin.qingpaopao.utils.ToastUtils;
+import com.wopin.qingpaopao.utils.WebViewUtil;
 import com.wopin.qingpaopao.view.OldChangeNewContentDetailView;
 import com.wopin.qingpaopao.widget.RecyclerViewAdDotLayout;
 
@@ -73,17 +69,8 @@ public class OldChangeNewContentDetailFragment extends BaseBarDialogFragment<Old
     protected void initView(View rootView) {
         mProductContent = getArguments().getParcelable(TAG);
 
-        ArrayList<String> descriptionImage = mProductContent.getDescriptionImage();
-        LinearLayout detailLinearLayout = rootView.findViewById(R.id.rv_goods_detail_linearlayout);
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        int width = wm.getDefaultDisplay().getWidth();
-        for (final String image : descriptionImage) {
-            final ImageView imageView = new ImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
-            imageView.setLayoutParams(layoutParams);
-            detailLinearLayout.addView(imageView);
-            GlideUtils.loadImage(imageView, -1, image, new CenterInside());
-        }
+        WebView descriptionWebView = rootView.findViewById(R.id.rv_goods_detail_linearlayout);
+        WebViewUtil.loadWebView(OldChangeNewContentDetailFragment.this, descriptionWebView, mProductContent.getDescription());
 
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(mProductContent.getName());
         ((TextView) rootView.findViewById(R.id.tv_subtitle)).setText(Html.fromHtml(mProductContent.getShort_description()));
@@ -96,9 +83,12 @@ public class OldChangeNewContentDetailFragment extends BaseBarDialogFragment<Old
                 dayTv.setText(String.format(getString(R.string.will_start_at), TimeFormatUtils.formatToTime(mProductContent.getDate_on_sale_from(), new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()))));
             } else if (daySaleTo > 0) {
                 dayTv.setText(String.format(getString(R.string.leave_day_number), String.valueOf(daySaleTo)));
-                mBuyBtn = rootView.findViewById(R.id.btn_i_want_to_buy);
-                mBuyBtn.setBackgroundColor(Color.RED);
-                mBuyBtn.setOnClickListener(this);
+                String count = mProductContent.getStock_quantity();
+                if (Integer.valueOf(TextUtils.isEmpty(count) ? "0" : count) > 0) {
+                    mBuyBtn = rootView.findViewById(R.id.btn_i_want_to_buy);
+                    mBuyBtn.setBackgroundColor(Color.RED);
+                    mBuyBtn.setOnClickListener(this);
+                }
             } else {
                 dayTv.setText(R.string.activity_over);
             }
@@ -183,6 +173,6 @@ public class OldChangeNewContentDetailFragment extends BaseBarDialogFragment<Old
 
     @Override
     public void OnBuyInformation(int number, String addressId) {
-        mPresenter.payMentExchange(addressId, mProductContent.getName(), mProductContent.getDescriptionImage().size() == 0 ? null : mProductContent.getDescriptionImage().get(0), mProductContent.getId(), number, Integer.valueOf(mProductContent.getPrice()), mOldProduct == null ? 0 : Integer.valueOf(mOldProduct.getName()));
+        mPresenter.payMentExchange(addressId, mProductContent.getName(), mProductContent.getImages().size() == 0 ? null : mProductContent.getImages().get(0).getSrc(), mProductContent.getId(), number, Integer.valueOf(mProductContent.getPrice()), mOldProduct == null ? 0 : Integer.valueOf(mOldProduct.getName()));
     }
 }

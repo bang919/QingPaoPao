@@ -63,7 +63,7 @@ public class CrowdFundingListAdapter extends RecyclerView.Adapter<CrowdFundingLi
             ((Disposable) tag).dispose();
         }
         final ProductContent productContent = mCrowdFundingDatas.get(position);
-        GlideUtils.loadImage(holder.mImageView, -1, productContent.getDescriptionImage().size() == 0 ? null : productContent.getDescriptionImage().get(0), new CenterCrop());
+        GlideUtils.loadImage(holder.mImageView, -1, productContent.getImages().size() == 0 ? null : productContent.getImages().get(0).getSrc(), new CenterCrop());
         holder.mTitleTv.setText(productContent.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

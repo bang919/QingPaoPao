@@ -1,6 +1,5 @@
 package com.wopin.qingpaopao.fragment.welfare.crowdfunding;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,14 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.wopin.qingpaopao.R;
 import com.wopin.qingpaopao.adapter.CrowdFundingGradeAdapter;
 import com.wopin.qingpaopao.adapter.ScoreMarketContentDetailAdapter;
@@ -25,11 +22,11 @@ import com.wopin.qingpaopao.presenter.CrowdFundingContentDetailPresenter;
 import com.wopin.qingpaopao.utils.GlideUtils;
 import com.wopin.qingpaopao.utils.TimeFormatUtils;
 import com.wopin.qingpaopao.utils.ToastUtils;
+import com.wopin.qingpaopao.utils.WebViewUtil;
 import com.wopin.qingpaopao.view.CrowdFundingDetailView;
 import com.wopin.qingpaopao.widget.RecyclerViewAdDotLayout;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CrowdFundingDetailFragment extends BaseBarDialogFragment<CrowdFundingContentDetailPresenter> implements View.OnClickListener, CrowdFundingDetailView, CrowdFundingProduceDialog.SupportInformationDialogCallback, CrowdFundingGradeAdapter.CrowdFundingGradeAdapterCallback {
@@ -72,17 +69,8 @@ public class CrowdFundingDetailFragment extends BaseBarDialogFragment<CrowdFundi
         mRootView = rootView;
         mProductContent = getArguments().getParcelable(TAG);
 
-        ArrayList<String> descriptionImage = mProductContent.getDescriptionImage();
-        LinearLayout detailLinearLayout = rootView.findViewById(R.id.rv_goods_detail_linearlayout);
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        int width = wm.getDefaultDisplay().getWidth();
-        for (final String image : descriptionImage) {
-            final ImageView imageView = new ImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
-            imageView.setLayoutParams(layoutParams);
-            detailLinearLayout.addView(imageView);
-            GlideUtils.loadImage(imageView, -1, image, new CenterInside());
-        }
+        WebView descriptionWebView = rootView.findViewById(R.id.rv_goods_detail_linearlayout);
+        WebViewUtil.loadWebView(CrowdFundingDetailFragment.this, descriptionWebView, mProductContent.getDescription());
 
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(mProductContent.getName());
         ((TextView) rootView.findViewById(R.id.tv_subtitle)).setText(mProductContent.getShort_description());
@@ -176,7 +164,7 @@ public class CrowdFundingDetailFragment extends BaseBarDialogFragment<CrowdFundi
 
     @Override
     public void onSupportInformation(ProductContent.AttributeBean attributeBean, int number, String addressId) {
-        mPresenter.payMentCrowdfunding(addressId, attributeBean.getOptions().get(0), mProductContent.getDescriptionImage().size() == 0 ? null : mProductContent.getDescriptionImage().get(0), mProductContent.getId(), number, Integer.valueOf(attributeBean.getName()));
+        mPresenter.payMentCrowdfunding(addressId, attributeBean.getOptions().get(0), mProductContent.getImages().size() == 0 ? null : mProductContent.getImages().get(0).getSrc(), mProductContent.getId(), number, Integer.valueOf(attributeBean.getName()));
     }
 
     @Override
@@ -198,7 +186,7 @@ public class CrowdFundingDetailFragment extends BaseBarDialogFragment<CrowdFundi
         if (mCurrentAttributeBean.getOptions() != null && mCurrentAttributeBean.getOptions().size() > 0) {
             gradeContentTv.setText(mCurrentAttributeBean.getOptions().get(0));
         }
-        String imageUrl = mProductContent.getAttributes() != null && mProductContent.getAttributes().size() > 0 && mProductContent.getAttributes().get(0).getOptions() != null && mProductContent.getAttributes().get(0).getOptions().size() > 1 ? mProductContent.getAttributes().get(0).getOptions().get(1) : mProductContent.getDescriptionImage().get(0);
+        String imageUrl = mProductContent.getAttributes() != null && mProductContent.getAttributes().size() > 0 && mProductContent.getAttributes().get(0).getOptions() != null && mProductContent.getAttributes().get(0).getOptions().size() > 1 ? mProductContent.getAttributes().get(0).getOptions().get(1) : mProductContent.getImages().get(0).getSrc();
         GlideUtils.loadImage(gradeImage, -1, imageUrl, new CenterCrop());
     }
 }

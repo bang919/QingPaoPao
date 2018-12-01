@@ -1,5 +1,7 @@
 package com.wopin.qingpaopao.fragment;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +35,7 @@ import com.wopin.qingpaopao.http.HttpClient;
 import com.wopin.qingpaopao.presenter.BasePresenter;
 import com.wopin.qingpaopao.presenter.LoginPresenter;
 import com.wopin.qingpaopao.presenter.MinePresenter;
+import com.wopin.qingpaopao.presenter.PhotoPresenter;
 import com.wopin.qingpaopao.utils.GlideUtils;
 import com.wopin.qingpaopao.utils.HttpUtil;
 import com.wopin.qingpaopao.utils.SPUtils;
@@ -67,7 +70,7 @@ public class MineFragment extends BaseMainFragment<MinePresenter> implements Min
 
     @Override
     protected MinePresenter initPresenter() {
-        return new MinePresenter(getContext(), this);
+        return new MinePresenter(this, this);
     }
 
     @Override
@@ -102,6 +105,7 @@ public class MineFragment extends BaseMainFragment<MinePresenter> implements Min
             mSignInTv.setOnClickListener(this);
         }
         mMessageIv.setOnClickListener(this);
+        mHeadIconIv.setOnClickListener(this);
     }
 
     @Override
@@ -197,6 +201,9 @@ public class MineFragment extends BaseMainFragment<MinePresenter> implements Min
                         }
                 );
                 break;
+            case R.id.iv_person_head_icon:
+                mPresenter.requestPermissionTodo(PhotoPresenter.REQUEST_PERMISSION_ALBUM);
+                break;
             case R.id.iv_message:
                 MessageMainFragment messageMainFragment = new MessageMainFragment();
                 messageMainFragment.show(getChildFragmentManager(), MessageMainFragment.TAG);
@@ -208,6 +215,23 @@ public class MineFragment extends BaseMainFragment<MinePresenter> implements Min
                 });
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onDestroy() {
+        mPresenter.deletePhotoFile();
+        super.onDestroy();
     }
 
     private String getTodayTime() {

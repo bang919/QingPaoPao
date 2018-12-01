@@ -1,6 +1,5 @@
 package com.wopin.qingpaopao.fragment.welfare.scoremarket;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -8,23 +7,18 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.wopin.qingpaopao.R;
 import com.wopin.qingpaopao.adapter.ScoreMarketContentDetailAdapter;
 import com.wopin.qingpaopao.bean.response.ProductContent;
 import com.wopin.qingpaopao.fragment.BaseBarDialogFragment;
 import com.wopin.qingpaopao.presenter.ScoreMarketContentDetailPresenter;
-import com.wopin.qingpaopao.utils.GlideUtils;
 import com.wopin.qingpaopao.utils.ToastUtils;
+import com.wopin.qingpaopao.utils.WebViewUtil;
 import com.wopin.qingpaopao.view.ScoreMarketContentDetailView;
 import com.wopin.qingpaopao.widget.RecyclerViewAdDotLayout;
-
-import java.util.ArrayList;
 
 public class ScoreMarketContentDetailFragment extends BaseBarDialogFragment<ScoreMarketContentDetailPresenter> implements View.OnClickListener, EnchangeScoreMarketProduceDialog.BuyInformationDialogCallback, ScoreMarketContentDetailView {
 
@@ -59,18 +53,8 @@ public class ScoreMarketContentDetailFragment extends BaseBarDialogFragment<Scor
     @Override
     protected void initView(View rootView) {
         mProductContent = getArguments().getParcelable(TAG);
-
-        ArrayList<String> descriptionImage = mProductContent.getDescriptionImage();
-        LinearLayout detailLinearLayout = rootView.findViewById(R.id.rv_goods_detail_linearlayout);
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        int width = wm.getDefaultDisplay().getWidth();
-        for (final String image : descriptionImage) {
-            final ImageView imageView = new ImageView(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
-            imageView.setLayoutParams(layoutParams);
-            detailLinearLayout.addView(imageView);
-            GlideUtils.loadImage(imageView, -1, image, new CenterInside());
-        }
+        WebView descriptionWebView = rootView.findViewById(R.id.rv_goods_detail_linearlayout);
+        WebViewUtil.loadWebView(ScoreMarketContentDetailFragment.this, descriptionWebView, mProductContent.getDescription());
 
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(mProductContent.getName());
         ((TextView) rootView.findViewById(R.id.tv_score)).setText(String.format(getString(R.string.score_number), mProductContent.getPrice()));
@@ -110,7 +94,7 @@ public class ScoreMarketContentDetailFragment extends BaseBarDialogFragment<Scor
 
     @Override
     public void OnBuyInformation(int number, String addressId) {
-        mPresenter.payMentScores(addressId, mProductContent.getName(), mProductContent.getDescriptionImage().size() == 0 ? null : mProductContent.getDescriptionImage().get(0), mProductContent.getId(), number, Integer.valueOf(mProductContent.getPrice()));
+        mPresenter.payMentScores(addressId, mProductContent.getName(), mProductContent.getImages().size() == 0 ? null : mProductContent.getImages().get(0).getSrc(), mProductContent.getId(), number, Integer.valueOf(mProductContent.getPrice()));
     }
 
     @Override

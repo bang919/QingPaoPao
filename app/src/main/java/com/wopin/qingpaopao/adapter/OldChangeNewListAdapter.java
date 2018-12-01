@@ -39,7 +39,7 @@ public class OldChangeNewListAdapter extends RecyclerView.Adapter<OldChangeNewLi
     @Override
     public void onBindViewHolder(@NonNull OldChangeNewViewHolder holder, int position) {
         final ProductContent productContent = mOldChangeNewDatas.get(position);
-        GlideUtils.loadImage(holder.mImageView, -1, productContent.getDescriptionImage().size() == 0 ? null : productContent.getDescriptionImage().get(0), new CenterCrop());
+        GlideUtils.loadImage(holder.mImageView, -1, productContent.getImages().size() == 0 ? null : productContent.getImages().get(0).getSrc(), new CenterCrop());
         holder.mTitleTv.setText(productContent.getName());
         holder.mPriceTv.setText(String.format(holder.mPriceTv.getContext().getString(R.string.price_float), Float.parseFloat(productContent.getPrice())));
         holder.mSubTitleTv.setText(Html.fromHtml(productContent.getShort_description()));
