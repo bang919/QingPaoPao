@@ -36,6 +36,7 @@ public class CupListRsp extends NormalRsp {
          * __v : 0
          */
 
+        public static final int NO_DEVICE_CHOOSE = -1;
         public static final int DEFAULT_STATUS = 0;
         public static final int ELECTROLYZE_STATUS = 1;
         public static final int CLEAN_STATUS = 2;

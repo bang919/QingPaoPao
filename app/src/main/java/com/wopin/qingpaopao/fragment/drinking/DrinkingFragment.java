@@ -53,7 +53,7 @@ public class DrinkingFragment extends BaseMainFragment<DrinkingPresenter> implem
         mDrinkingListView.setOnCupItemClickCallback(this);
         mDrinkingStartView = new DrinkingStartView();
         mDrinkingStartView.setPresenterAndCallback(mPresenter, this);
-        switchFragment(mDrinkingListView);
+        switchFragment(mDrinkingStartView);
 
         mPresenter.getCupList();
     }
@@ -83,7 +83,6 @@ public class DrinkingFragment extends BaseMainFragment<DrinkingPresenter> implem
     @Override
     public void backToDrinkingStartView() {
         mPresenter.getDrinkCount();
-        mDrinkingStartView.setOnlineCups(mOnlineCups);
         switchFragment(mDrinkingStartView);
     }
 
@@ -116,6 +115,7 @@ public class DrinkingFragment extends BaseMainFragment<DrinkingPresenter> implem
                         mOnlineCups.add(cupBean);
                     }
                 }
+                mDrinkingStartView.setOnlineCups(mOnlineCups);
                 mDrinkingListView.notifyCupList(cupBeanList, currentConnectCup);
             }
         });

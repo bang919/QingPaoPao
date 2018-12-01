@@ -56,6 +56,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="19sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/tv_username"
         app:layout_constraintLeft_toRightOf="@id/iv_person_head_icon"
         app:layout_constraintTop_toTopOf="@id/iv_person_head_icon" />

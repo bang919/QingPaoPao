@@ -371,5 +371,8 @@
     <string name="color_4">中国红</string>
     <string name="color_5">草木绿</string>
     <string name="color_6">曜石黑</string>
+    <string name="choose_device">选择设备</string>
+    <string name="no_connect_device">未连接设备</string>
+    <string name="no_choose_device">未选择设备</string>
 
 </resources>

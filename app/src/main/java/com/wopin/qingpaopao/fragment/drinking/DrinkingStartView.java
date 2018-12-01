@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,9 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
 
     public void setOnlineCups(ArrayList<CupListRsp.CupBean> onlineCups) {
         mOnlineCups = onlineCups;
-
+        if (mCurrentDeviceName != null && TextUtils.isEmpty(mCurrentDeviceName.getText().toString())) {
+            refreshCurrentCup(null);
+        }
     }
 
     @Override
@@ -130,9 +133,9 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
         if (cupBean != null) {
             mDrinkingPresenter.setCurrentControlCup(cupBean);
         }
-        if (mCurrentDeviceName != null) {
-            CupListRsp.CupBean currentControlCup = mDrinkingPresenter.getCurrentControlCup();
-            mCurrentDeviceName.setText(currentControlCup != null ? currentControlCup.getName() : "");
+        CupListRsp.CupBean currentControlCup = mDrinkingPresenter.getCurrentControlCup();
+        if (mCurrentDeviceName != null && currentControlCup != null) {
+            mCurrentDeviceName.setText(currentControlCup.getName());
 
             setElectrolyzeStart(false);
             mSeekBar.setProgress(5 * 60);
@@ -191,6 +194,9 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
     }
 
     public int getCurrentStatus() {
+        if (mDrinkingPresenter.getCurrentControlCup() == null) {
+            return CupListRsp.CupBean.NO_DEVICE_CHOOSE;
+        }
         return mDrinkingPresenter.getCurrentControlCup().getStatus();
     }
 
@@ -265,6 +271,10 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
                 }
                 break;
             case R.id.btn_switch_electrolyze: {
+                if (mDrinkingPresenter.getCurrentControlCup() == null) {
+                    ToastUtils.showShort(R.string.no_choose_device);
+                    return;
+                }
                 if (getCurrentStatus() == CupListRsp.CupBean.CLEAN_STATUS) {
                     ToastUtils.showShort(R.string.cleaning_please_change_water);
                     return;
@@ -279,6 +289,10 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
                 break;
             }
             case R.id.iv_light_setting:
+                if (mDrinkingPresenter.getCurrentControlCup() == null) {
+                    ToastUtils.showShort(R.string.no_choose_device);
+                    return;
+                }
                 if (getCurrentStatus() == CupListRsp.CupBean.CLEAN_STATUS) {
                     ToastUtils.showShort(R.string.cleaning_please_change_water);
                     return;
@@ -291,6 +305,10 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
                 lightSettingFragment.show(getChildFragmentManager(), LightSettingFragment.TAG);
                 break;
             case R.id.iv_cup_clean: {
+                if (mDrinkingPresenter.getCurrentControlCup() == null) {
+                    ToastUtils.showShort(R.string.no_choose_device);
+                    return;
+                }
                 if (getCurrentStatus() == CupListRsp.CupBean.CLEAN_END_STATUS) {
                     ToastUtils.showShort(R.string.clean_finish_please_change_water);
                     return;
@@ -308,6 +326,10 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
             }
             case R.id.tv_current_device_name:
             case R.id.btn_select_device:
+                if (mOnlineCups == null || mOnlineCups.size() == 0) {
+                    ToastUtils.showShort(R.string.no_connect_device);
+                    return;
+                }
                 ArrayList<String> datas = new ArrayList<>();
                 for (CupListRsp.CupBean cupBean : mOnlineCups) {
                     datas.add(cupBean.getName());

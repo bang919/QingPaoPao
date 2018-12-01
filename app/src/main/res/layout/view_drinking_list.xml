@@ -21,7 +21,6 @@
         android:layout_height="40dp"
         android:scaleType="centerInside"
         android:src="@mipmap/m_back"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/actionbar_title"
         app:layout_constraintLeft_toLeftOf="parent" />
 
