@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -93,7 +92,7 @@ public class BlueToothPresenter {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String address = device.getAddress();
-                if (mBluetoothDevices.get(address) == null && !TextUtils.isEmpty(device.getName())) {
+                if (mBluetoothDevices.get(address) == null) {
                     mBluetoothDevices.put(address, device);
                     mBlueToothPresenterCallback.onDevicesFind(mBluetoothDevices, device);
                 }
@@ -112,7 +111,7 @@ public class BlueToothPresenter {
                 List<BluetoothDevice> connectedDevices = mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT_SERVER);
                 for (BluetoothDevice bluetoothDevice : connectedDevices) {
                     String address = bluetoothDevice.getAddress();
-                    if (mBluetoothDevices.get(address) == null && !TextUtils.isEmpty(bluetoothDevice.getName())) {
+                    if (mBluetoothDevices.get(address) == null) {
                         mBluetoothDevices.put(address, bluetoothDevice);
                         mBlueToothPresenterCallback.onDevicesFind(mBluetoothDevices, bluetoothDevice);
                     }

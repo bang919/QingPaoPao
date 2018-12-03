@@ -3,6 +3,7 @@ package com.wopin.qingpaopao.adapter;
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,9 @@ public class BleChooseListRvAdapter extends RecyclerView.Adapter<BleChooseListRv
     @Override
     public void onBindViewHolder(@NonNull WifiChooseListViewHolder holder, final int position) {
         final BluetoothDevice bluetoothDevice = mBluetoothDevices.get(position);
-        holder.mTitleTv.setText(bluetoothDevice.getName());
+        String name = bluetoothDevice.getName();
+        String address = bluetoothDevice.getAddress();
+        holder.mTitleTv.setText(TextUtils.isEmpty(name) ? address : name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

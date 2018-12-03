@@ -16,7 +16,10 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/icon_system_message_item"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/icon_system_message_item"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textColor="@color/colorBlack"
         android:textSize="18sp"
         android:textStyle="bold" />

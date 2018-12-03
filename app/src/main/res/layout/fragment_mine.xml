@@ -49,7 +49,7 @@
 
     <TextView
         android:id="@+id/tv_phone_number"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:text="18888888888"
@@ -59,27 +59,34 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/tv_username"
         app:layout_constraintLeft_toRightOf="@id/iv_person_head_icon"
+        app:layout_constraintRight_toLeftOf="@+id/tv_sign_in"
         app:layout_constraintTop_toTopOf="@id/iv_person_head_icon" />
 
     <TextView
         android:id="@+id/tv_username"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:lines="1"
         android:text="abc"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_person_head_icon"
-        app:layout_constraintLeft_toLeftOf="@id/tv_phone_number"
+        app:layout_constraintLeft_toRightOf="@id/iv_person_head_icon"
+        app:layout_constraintRight_toRightOf="@+id/tv_sign_in"
         app:layout_constraintTop_toBottomOf="@id/tv_phone_number" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
         android:text="@string/score"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_phone_number"
+        app:layout_constraintBottom_toTopOf="@id/tv_sign_in"
         app:layout_constraintRight_toRightOf="@id/iv_message" />
 
     <TextView
