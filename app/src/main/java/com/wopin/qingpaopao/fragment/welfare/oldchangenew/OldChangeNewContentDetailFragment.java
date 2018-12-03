@@ -52,7 +52,7 @@ public class OldChangeNewContentDetailFragment extends BaseBarDialogFragment<Old
 
     @Override
     protected String setBarTitle() {
-        return getString(R.string.old_change_new);
+        return getString(R.string.commodity_details);
     }
 
     @Override

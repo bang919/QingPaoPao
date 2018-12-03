@@ -182,6 +182,7 @@
     <string name="goods_detail">商品详情</string>
     <string name="i_want_to_change">我要兑换</string>
     <string name="change_at_once">立即兑换</string>
+    <string name="buy_at_once">立即购买</string>
     <string name="pay_at_once">立即支付</string>
     <string name="buy_information">购买信息</string>
     <string name="buy_count">购买数量</string>

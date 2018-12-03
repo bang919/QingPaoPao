@@ -178,7 +178,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@color/colorWhite3"
-        android:text="@string/change_at_once"
+        android:text="@string/buy_at_once"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
