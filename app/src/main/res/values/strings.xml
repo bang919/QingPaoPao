@@ -1,6 +1,6 @@
 <resources>
     <!-- base frame -->
-    <string name="app_name">QingPaoPao</string>
+    <string name="app_name">氢泡泡</string>
     <string name="refuse">取消</string>
     <string name="accept">确定</string>
 

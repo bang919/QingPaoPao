@@ -170,7 +170,9 @@ public class DrinkingStartView extends Fragment implements View.OnClickListener 
                 @Override
                 public void onElectrolyzeEnd(String uuid) {
                     if (getCurrentStatus() != CupListRsp.CupBean.DEFAULT_STATUS || mSwitchElectrolyzeBtn.isSelected()) {
-                        mDrinkingPresenter.getCurrentControlCup().setStatus(CupListRsp.CupBean.DEFAULT_STATUS);
+                        if (mDrinkingPresenter.getCurrentControlCup() != null) {
+                            mDrinkingPresenter.getCurrentControlCup().setStatus(CupListRsp.CupBean.DEFAULT_STATUS);
+                        }
                         setElectrolyzeStart(false);
                     }
                 }
