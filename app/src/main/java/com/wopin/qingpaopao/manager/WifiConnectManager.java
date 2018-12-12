@@ -75,7 +75,13 @@ public class WifiConnectManager extends ConnectManager<WifiConnectManager.WifiUp
             };
             MyApplication.getMyApplicationContext().registerReceiver(mWifiConnectBroadcastReceiver, makeFilter());
         }
-        onServerConnectCallback.onConnectServerCallback();
+        //延迟callback，防止WifiState返回第一个CONNECTED造成数据错乱
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onServerConnectCallback.onConnectServerCallback();
+            }
+        }, 500);
     }
 
     private IntentFilter makeFilter() {

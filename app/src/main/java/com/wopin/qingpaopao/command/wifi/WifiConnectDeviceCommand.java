@@ -33,10 +33,12 @@ public class WifiConnectDeviceCommand extends IConnectDeviceCommand<WifiConfigur
         }
         wifiManager.disconnect();
         int networkId = getTarget().networkId > 0 ? getTarget().networkId : wifiManager.addNetwork(getTarget());
-        if (connectWifiByReflectMethod(wifiManager, networkId) == null) {
-            wifiManager.enableNetwork(networkId, true);
-            wifiManager.reconnect();
-        }
+//        if (connectWifiByReflectMethod(wifiManager, networkId) == null) {
+//            wifiManager.enableNetwork(networkId, true);
+//            wifiManager.reconnect();
+//        }
+        wifiManager.enableNetwork(networkId, true);
+        wifiManager.reconnect();
         wifiManager = null;
     }
 
