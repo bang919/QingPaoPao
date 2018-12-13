@@ -115,7 +115,9 @@ public class LightSettingFragment extends BaseDialogFragment implements View.OnC
 
         @Override
         public void run() {
-            mDrinkingPresenter.setColor(color);
+            if (mDrinkingPresenter != null) {
+                mDrinkingPresenter.setColor(color);
+            }
         }
     }
 }

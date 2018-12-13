@@ -51,7 +51,6 @@
         android:text="@string/link_by_hand"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/btn_scan"
         app:layout_constraintRight_toRightOf="@id/btn_scan"
