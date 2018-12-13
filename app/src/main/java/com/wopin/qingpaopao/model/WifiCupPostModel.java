@@ -26,7 +26,7 @@ public class WifiCupPostModel {
     private static final int WAIT_EACH_TIME = 5;//每次API请求Timtout为5秒钟
 
     public Observable<ArrayList<WifiRsp>> getWifiList() {
-        MediaType mediaType = MediaType.parse("application/octet-stream");
+        MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "scan:1\n");
         return HttpClient.getApiInterface().getWifiList(body)
                 .timeout(WAIT_EACH_TIME, TimeUnit.SECONDS)
@@ -45,7 +45,7 @@ public class WifiCupPostModel {
     }
 
     public Observable<WifiConfigToCupRsp> sendWifiConfigToCup(String ssid, String password) {
-        MediaType mediaType = MediaType.parse("application/octet-stream");
+        MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "ssid: " + ssid + "\n" + "password: " + password);
         return HttpClient.getApiInterface().sendWifiConfigToCup(body)
                 .timeout(WAIT_EACH_TIME, TimeUnit.SECONDS)
