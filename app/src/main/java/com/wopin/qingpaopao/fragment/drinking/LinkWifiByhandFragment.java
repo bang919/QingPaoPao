@@ -3,8 +3,8 @@ package com.wopin.qingpaopao.fragment.drinking;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +14,7 @@ import com.wopin.qingpaopao.common.MyApplication;
 import com.wopin.qingpaopao.fragment.BaseBarDialogFragment;
 import com.wopin.qingpaopao.model.WifiCupPostModel;
 import com.wopin.qingpaopao.presenter.BasePresenter;
+import com.wopin.qingpaopao.utils.ToastUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class LinkWifiByhandFragment extends BaseBarDialogFragment {
     public static final String TAG = "LinkWifiByhandFragment";
     private LinkWifiByhandCallback mLinkWifiByhandCallback;
     private Disposable mDisposable;
-    private Toast toast;
+    private String beforWifi;
+    private String cupWifi;
 
     public void setLinkWifiByhandCallback(LinkWifiByhandCallback linkWifiByhandCallback) {
         mLinkWifiByhandCallback = linkWifiByhandCallback;
@@ -58,7 +60,7 @@ public class LinkWifiByhandFragment extends BaseBarDialogFragment {
 
     @Override
     protected void initView(View rootView) {
-
+        beforWifi = getWifi();
     }
 
     @Override
@@ -70,9 +72,21 @@ public class LinkWifiByhandFragment extends BaseBarDialogFragment {
         super.onPause();
     }
 
+    private String getWifi() {
+        WifiManager wifiMgr = (WifiManager) MyApplication.getMyApplicationContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifiMgr.getConnectionInfo();
+        return info != null ? info.getSSID() : null;
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
+        String nowWifi = getWifi();
+        if (!TextUtils.isEmpty(beforWifi) && !beforWifi.contains(nowWifi)) {
+            cupWifi = nowWifi;
+        }
+
         getObservable().subscribe(new Observer<ArrayList<WifiRsp>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -141,14 +155,10 @@ public class LinkWifiByhandFragment extends BaseBarDialogFragment {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-//                        if (!TextUtils.isEmpty(ssid)) {
-//                            if (toast != null) {
-//                                toast.cancel();
-//                            }
-//                            toast = Toast.makeText(getContext(), getString(R.string.connecting_to, ssid), Toast.LENGTH_SHORT);
-//
-//                            toast.show();
-//                        }
+                        if (!TextUtils.isEmpty(cupWifi) && !cupWifi.contains(ssid)) {
+                            ToastUtils.showLong(getString(R.string.please_disable_auto_switch, ssid));
+                            dismiss();
+                        }
                     }
                 });
     }

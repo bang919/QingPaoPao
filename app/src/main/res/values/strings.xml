@@ -376,6 +376,6 @@
     <string name="no_connect_device">未连接设备</string>
     <string name="no_choose_device">未选择设备</string>
     <string name="please_try_link_by_hand">Wifi被系统切换了，请尝试手动连接模式</string>
-    <string name="connecting_to">正在尝试连接:%s</string>
+    <string name="please_disable_auto_switch">Wifi被系统切换到%s，请禁用Wifi自动切换功能后重试</string>
 
 </resources>
