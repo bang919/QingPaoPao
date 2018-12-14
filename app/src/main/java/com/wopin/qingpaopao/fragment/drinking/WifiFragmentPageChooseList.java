@@ -1,6 +1,7 @@
 package com.wopin.qingpaopao.fragment.drinking;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +24,14 @@ public class WifiFragmentPageChooseList extends BaseBarDialogFragment<WifiPageCh
     private TextView mChooseWifiTv;
     private EditText mPasswordEt;
     private WifiSettingSuccessListener mWifiSettingSuccessListener;
+
+    public static WifiFragmentPageChooseList build(String popoId) {
+        WifiFragmentPageChooseList wifiFragmentPageChooseList = new WifiFragmentPageChooseList();
+        Bundle args = new Bundle();
+        args.putString(TAG, popoId);
+        wifiFragmentPageChooseList.setArguments(args);
+        return wifiFragmentPageChooseList;
+    }
 
     public void setWifiSettingSuccessListener(WifiSettingSuccessListener wifiSettingSuccessListener) {
         mWifiSettingSuccessListener = wifiSettingSuccessListener;
@@ -55,13 +64,20 @@ public class WifiFragmentPageChooseList extends BaseBarDialogFragment<WifiPageCh
     protected void initEvent() {
         ToastUtils.showShort(getString(R.string.success_connect_wifi));
         setLoadingVisibility(true);
-        mPresenter.getWifiList();
+        mPresenter.getWifiList(getArguments().getString(TAG));
     }
 
     @Override
     public void onWifiListResponse(ArrayList<WifiRsp> wifiRsps) {
         this.wifiRsps = wifiRsps;
         setLoadingVisibility(false);
+    }
+
+    @Override
+    public void onWifiChangeAuto() {
+        setLoadingVisibility(false);
+        ToastUtils.showLong(R.string.please_try_link_by_hand);
+        dismiss();
     }
 
     @Override

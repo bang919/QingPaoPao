@@ -61,7 +61,7 @@ public class WifiFragmentPage2 extends Fragment implements View.OnClickListener 
 
             @Override
             public void onConnectDevice(WifiConnectManager.WifiUpdaterBean wifiUpdaterBean) {
-                jumpToWifiChooseListFragment();
+                jumpToWifiChooseListFragment(wifiUpdaterBean.getSsid());
             }
         };
         WifiConnectManager.getInstance().addUpdater(mUpdater);
@@ -75,7 +75,7 @@ public class WifiFragmentPage2 extends Fragment implements View.OnClickListener 
                 linkWifiByhandFragment.setLinkWifiByhandCallback(new LinkWifiByhandFragment.LinkWifiByhandCallback() {
                     @Override
                     public void onWifiLinkByhand() {
-                        jumpToWifiChooseListFragment();
+                        jumpToWifiChooseListFragment("");
                     }
                 });
                 linkWifiByhandFragment.show(getChildFragmentManager(), LinkWifiByhandFragment.TAG);
@@ -83,8 +83,8 @@ public class WifiFragmentPage2 extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void jumpToWifiChooseListFragment() {
-        WifiFragmentPageChooseList wifiFragmentPageChooseList = new WifiFragmentPageChooseList();
+    private void jumpToWifiChooseListFragment(String ssid) {
+        WifiFragmentPageChooseList wifiFragmentPageChooseList = WifiFragmentPageChooseList.build(ssid);
         wifiFragmentPageChooseList.setWifiSettingSuccessListener(mWifiSettingSuccessListener);
         wifiFragmentPageChooseList.show(getChildFragmentManager(), WifiFragmentPageChooseList.TAG);
     }

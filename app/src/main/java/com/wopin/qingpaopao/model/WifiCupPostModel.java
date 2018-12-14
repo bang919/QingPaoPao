@@ -3,13 +3,9 @@ package com.wopin.qingpaopao.model;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.wopin.qingpaopao.bean.response.WifiConfigToCupRsp;
-import com.wopin.qingpaopao.bean.response.WifiRsp;
 import com.wopin.qingpaopao.http.HttpClient;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -25,23 +21,10 @@ public class WifiCupPostModel {
 
     private static final int WAIT_EACH_TIME = 5;//每次API请求Timtout为5秒钟
 
-    public Observable<ArrayList<WifiRsp>> getWifiList() {
+    public Observable<String> getWifiList() {
         MediaType mediaType = MediaType.parse("text/plain");
         RequestBody body = RequestBody.create(mediaType, "scan:1\n");
-        return HttpClient.getApiInterface().getWifiList(body)
-                .timeout(WAIT_EACH_TIME, TimeUnit.SECONDS)
-                .retryWhen(getRetryWhen())
-                .map(new Function<String, ArrayList<WifiRsp>>() {
-                    @Override
-                    public ArrayList<WifiRsp> apply(String s) throws Exception {
-                        String jsonString = "[" + s + "]";
-                        Type founderListType = new TypeToken<ArrayList<WifiRsp>>() {
-                        }.getType();
-                        return new Gson().fromJson(jsonString, founderListType);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return HttpClient.getApiInterface().getWifiList(body);
     }
 
     public Observable<WifiConfigToCupRsp> sendWifiConfigToCup(String ssid, String password) {
@@ -61,7 +44,7 @@ public class WifiCupPostModel {
     }
 
     @NonNull
-    private Function<Observable<Throwable>, ObservableSource<Long>> getRetryWhen() {
+    public Function<Observable<Throwable>, ObservableSource<Long>> getRetryWhen() {
         return new Function<Observable<Throwable>, ObservableSource<Long>>() {
             @Override
             public ObservableSource<Long> apply(Observable<Throwable> throwableObservable) throws Exception {

@@ -9,6 +9,8 @@ public interface WifiPageChooseListView {
 
     void onWifiListResponse(ArrayList<WifiRsp> wifiRsps);
 
+    void onWifiChangeAuto();
+
     void onWifiConfigToCupRsp(WifiConfigToCupRsp wifiConfigToCupRsp);
 
     void onError(String errorMsg);
