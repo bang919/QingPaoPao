@@ -26,11 +26,11 @@ public class WifiConnectDeviceCommand extends IConnectDeviceCommand<WifiConfigur
             wifiManager.setWifiEnabled(true);
         }
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
-        if (configuredNetworks != null) {
-            for (WifiConfiguration c : configuredNetworks) {
-                wifiManager.disableNetwork(c.networkId);
-            }
-        }
+//        if (configuredNetworks != null) {
+//            for (WifiConfiguration c : configuredNetworks) {
+//                wifiManager.disableNetwork(c.networkId);
+//            }
+//        }
         wifiManager.disconnect();
         int networkId = getTarget().networkId > 0 ? getTarget().networkId : wifiManager.addNetwork(getTarget());
 //        if (connectWifiByReflectMethod(wifiManager, networkId) == null) {
