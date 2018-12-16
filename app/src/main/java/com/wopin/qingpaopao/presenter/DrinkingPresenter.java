@@ -3,6 +3,7 @@ package com.wopin.qingpaopao.presenter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.location.Location;
+import android.os.Handler;
 
 import com.wopin.qingpaopao.R;
 import com.wopin.qingpaopao.bean.response.CupListRsp;
@@ -36,11 +37,14 @@ public class DrinkingPresenter extends BasePresenter<DrinkingView> {
     private CupListRsp.CupBean mCurrentControlCup;//当前控制的设备
     private Updater<BleConnectManager.BleUpdaterBean> mBleUpdater;
     private Updater<MqttConnectManager.MqttUpdaterBean> mMqttUpdater;
+    private Handler mHandler;
+    private Runnable mDeviceConnectTimeoutR;
 
     private Object mFirstTimeAddDevice;//会在onConnectDevice后清空  BluetoothDevice/WifiRsp
 
     public DrinkingPresenter(Context context, DrinkingView view) {
         super(context, view);
+        mHandler = new Handler();
         mDrinkingModel = new DrinkingModel();
         mOnlineCups = new ArrayList<>();
         mBleUpdater = new Updater<BleConnectManager.BleUpdaterBean>() {
@@ -97,6 +101,7 @@ public class DrinkingPresenter extends BasePresenter<DrinkingView> {
                     updateCupListUi();
                 }
                 mFirstTimeAddDevice = null;
+                mHandler.removeCallbacks(mDeviceConnectTimeoutR);
             }
 
             @Override
@@ -123,6 +128,7 @@ public class DrinkingPresenter extends BasePresenter<DrinkingView> {
 
     @Override
     public void destroy() {
+        mHandler.removeCallbacks(mDeviceConnectTimeoutR);
         BleConnectManager.getInstance().removeUpdater(mBleUpdater);
         MqttConnectManager.getInstance().removeUpdater(mMqttUpdater);
         super.destroy();
@@ -146,6 +152,17 @@ public class DrinkingPresenter extends BasePresenter<DrinkingView> {
         } else if (device instanceof WifiConfigToCupRsp) {
             mView.onLoading();
             MqttConnectManager.getInstance().connectDevice(((WifiConfigToCupRsp) device).getDevice_id());
+            //设置连接超时45秒
+            mDeviceConnectTimeoutR = new Runnable() {
+                @Override
+                public void run() {
+                    if (mFirstTimeAddDevice != null) {
+                        mView.onError(mContext.getString(R.string.connect_timeout));
+                    }
+                }
+            };
+            mHandler.removeCallbacks(mDeviceConnectTimeoutR);
+            mHandler.postDelayed(mDeviceConnectTimeoutR, 45000);
         } else {
             mView.onError(mContext.getString(R.string.known_error));
         }
