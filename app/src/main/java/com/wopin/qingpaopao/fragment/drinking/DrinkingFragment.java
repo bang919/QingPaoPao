@@ -77,7 +77,7 @@ public class DrinkingFragment extends BaseMainFragment<DrinkingPresenter> implem
 
     @Override
     public void refreshData() {
-
+        mPresenter.getDrinkCount();
     }
 
     @Override

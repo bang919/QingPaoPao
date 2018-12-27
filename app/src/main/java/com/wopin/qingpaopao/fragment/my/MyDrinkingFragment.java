@@ -26,6 +26,7 @@ import com.wopin.qingpaopao.presenter.BasePresenter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import io.reactivex.disposables.Disposable;
@@ -139,8 +140,9 @@ public class MyDrinkingFragment extends BaseBarDialogFragment implements View.On
         DrinkListTodayRsp drinkListTodayRsp = (DrinkListTodayRsp) getArguments().getSerializable(DRINKING_TODAY);
         DrinkListTotalRsp drinkListTotalRsp = (DrinkListTotalRsp) getArguments().getSerializable(DRINKING_TOTAL);
         if (drinkListTodayRsp != null && drinkListTodayRsp.getResult() != null) {
-            mTodayDrinkCount = drinkListTodayRsp.getResult().getDrinks().size();
-            mTodayDrinkTime = drinkListTodayRsp.getResult().getDrinks().get(0).getTime();
+            List<DrinkListTodayRsp.ResultBean.DrinksBean> todayDrinks = drinkListTodayRsp.getResult().getDrinks();
+            mTodayDrinkCount = todayDrinks.size();
+            mTodayDrinkTime = todayDrinks.get(mTodayDrinkCount - 1).getTime();
         }
 
         if (drinkListTotalRsp != null && drinkListTotalRsp.getResult() != null && drinkListTotalRsp.getResult() != null) {
