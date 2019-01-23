@@ -125,9 +125,9 @@
     <string name="edit">编辑</string>
     <string name="drink_every_title">每日喝水量</string>
     <string name="cup">%d杯</string>
-    <string name="start_electrolysis">开始电解</string>
-    <string name="stop_electrolysis">停止电解</string>
-    <string name="electrolyzing">正在电解</string>
+    <string name="start_electrolysis">开始制氢</string>
+    <string name="stop_electrolysis">停止制氢</string>
+    <string name="electrolyzing">正在制氢</string>
     <string name="cleaning">正在冲洗</string>
     <string name="device_manager">设备管理</string>
     <string name="electric">电量</string>
@@ -145,7 +145,7 @@
     <string name="notice_warning">注意：清洗中，请勿关闭水杯</string>
     <string name="close_clean">关闭清洗</string>
     <string name="hint">提示</string>
-    <string name="clean_hint_content">1.水杯清洗完成，请倒掉水，重新加入可饮用水进行电解！\n
+    <string name="clean_hint_content">1.水杯清洗完成，请倒掉水，重新加入可饮用水进行制氢！\n
     2.此窗口会在您重启水杯之后自动消失！</string>
     <string name="light_setting">灯光设置</string>
     <string name="brightness_setting">灯光亮度调节</string>
