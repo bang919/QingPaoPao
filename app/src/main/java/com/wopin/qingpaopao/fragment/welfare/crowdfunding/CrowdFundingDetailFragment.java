@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -73,7 +74,7 @@ public class CrowdFundingDetailFragment extends BaseBarDialogFragment<CrowdFundi
         WebViewUtil.loadWebView(CrowdFundingDetailFragment.this, descriptionWebView, mProductContent.getDescription());
 
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(mProductContent.getName());
-        ((TextView) rootView.findViewById(R.id.tv_subtitle)).setText(mProductContent.getShort_description());
+        ((TextView) rootView.findViewById(R.id.tv_subtitle)).setText(Html.fromHtml(mProductContent.getShort_description()));
         ((TextView) rootView.findViewById(R.id.target_price_value)).setText(String.format(getString(R.string.price_number), mProductContent.getPrice()));
 
         int daysDifference = 1;
