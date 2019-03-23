@@ -94,7 +94,7 @@ public class MqttConnectManager extends ConnectManager<MqttConnectManager.MqttUp
                             .retryWhen(new Function<Observable<Throwable>, ObservableSource<Long>>() {
                                 @Override
                                 public ObservableSource<Long> apply(Observable<Throwable> throwableObservable) throws Exception {
-                                    return throwableObservable.zipWith(Observable.range(1, 10), new BiFunction<Throwable, Integer, Integer>() {
+                                    return throwableObservable.zipWith(Observable.range(1, 20), new BiFunction<Throwable, Integer, Integer>() {
                                         @Override
                                         public Integer apply(Throwable throwable, Integer integer) throws Exception {
                                             if (integer >= 10) {

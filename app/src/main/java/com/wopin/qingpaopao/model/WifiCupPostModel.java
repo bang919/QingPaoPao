@@ -1,6 +1,7 @@
 package com.wopin.qingpaopao.model;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.wopin.qingpaopao.bean.response.WifiConfigToCupRsp;
@@ -19,7 +20,7 @@ import okhttp3.RequestBody;
 
 public class WifiCupPostModel {
 
-    private static final int WAIT_EACH_TIME = 5;//每次API请求Timtout为5秒钟
+    private static final int WAIT_EACH_TIME = 15;//每次API请求Timtout为5秒钟
 
     public Observable<String> getWifiList() {
         MediaType mediaType = MediaType.parse("text/plain");
@@ -29,13 +30,15 @@ public class WifiCupPostModel {
 
     public Observable<WifiConfigToCupRsp> sendWifiConfigToCup(String ssid, String password) {
         MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "ssid: " + ssid + "\n" + "password: " + password);
+        RequestBody body = RequestBody.create(mediaType, "ssid: " + ssid + "\n" + "password: " + password + "\n");
+        Log.d("sendWifiConfigToCup", "sending request");
         return HttpClient.getApiInterface().sendWifiConfigToCup(body)
                 .timeout(WAIT_EACH_TIME, TimeUnit.SECONDS)
                 .retryWhen(getRetryWhen())
                 .map(new Function<String, WifiConfigToCupRsp>() {
                     @Override
                     public WifiConfigToCupRsp apply(String s) throws Exception {
+                        Log.d("sendWifiConfigToCup", s);
                         return new Gson().fromJson(s, WifiConfigToCupRsp.class);
                     }
                 })
