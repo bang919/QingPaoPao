@@ -33,7 +33,7 @@ public class WelfarePresenter extends BasePresenter<WelfareView> {
     }
 
     public void getCrowdFundings() {
-        getWelfareProduct(17);
+        getWelfareProduct(28);
     }
 
     public void getWelfareProduct(int categoryId) {
